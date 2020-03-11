@@ -73,9 +73,16 @@ def play_game():
             player.go(command)
             print(player.current_room)
         elif command in check_inv:
-            pass
+            if len(player.inventory) > 0:
+                print("You have:")
+                for item in player.inventory:
+                    print(item)
+            else:
+                print("You aren't carrying anything.")
         elif command.split()[0] in verbs:
             player.execute(command)
+        else:
+            print("Unable to comply.")
 
 
 if __name__ == '__main__':

@@ -34,11 +34,17 @@ class Player():
 
     def take(self, obj):
         success = False
+        if obj == "all":
+            for item in self.current_room.contents:
+                item.on_take()
+                success = True
+            self.inventory.extend(self.current_room.contents)
+            self.current_room.contents = []
+            
         for item in self.current_room.contents:
             if obj == item.name:
                 self.inventory.append(item)
                 self.current_room.contents.remove(item)
-                # print(f'Got {obj}!')
                 item.on_take()
                 success = True
                 break
