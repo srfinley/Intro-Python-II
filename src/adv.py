@@ -55,6 +55,7 @@ player = Player('Hero', room['outside'])
 
 directions = ['n', 'e', 's', 'w']
 
+
 def play_game():
     command = ''
     while not command == 'q':
