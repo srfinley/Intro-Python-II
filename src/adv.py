@@ -59,7 +59,9 @@ player = Player('Hero', room['outside'])
 
 directions = ['n', 'e', 's', 'w']
 
-verbs = ['look', 'get', 'take']
+verbs = ['look', 'get', 'take', 'drop']
+
+check_inv = ['i', 'inventory']
 
 
 def play_game():
@@ -70,6 +72,8 @@ def play_game():
         if command in directions:
             player.go(command)
             print(player.current_room)
+        elif command in check_inv:
+            pass
         elif command.split()[0] in verbs:
             player.execute(command)
 

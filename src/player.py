@@ -33,14 +33,15 @@ class Player():
         pass
 
     def take(self, obj):
-        obj = ' '.join(obj)
         success = False
         for item in self.current_room.contents:
             if obj == item.name:
                 self.inventory.append(item)
                 self.current_room.contents.remove(item)
-                print(f'Got {obj}!')
+                # print(f'Got {obj}!')
+                item.on_take()
                 success = True
+                break
         if not success:
             for item in self.inventory:
                 if obj == item.name:
@@ -48,13 +49,25 @@ class Player():
         if not success:
             print(f"No {obj} to take.")
             
-
+    def drop(self, obj):
+        success = False
+        for item in self.inventory:
+            if obj == item.name:
+                self.current_room.contents.append(item)
+                self.inventory.remove(item)
+                item.on_drop()
+                success = True
+                break
+        if not success:
+            print(f"You don't have {obj}.")
 
     def execute(self, command):
         words = command.split()
         verb = words[0]
-        obj = words[1:]
+        obj = ' '.join(words[1:])
         if verb == 'look':
             self.look(obj)
         if verb == 'get' or verb == 'take':
             self.take(obj)
+        if verb == 'drop':
+            self.drop(obj)
