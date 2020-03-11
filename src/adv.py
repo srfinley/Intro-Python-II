@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -34,6 +35,9 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+room['outside'].contents = [Item("the hot dog", "hot diggity dog"),
+                            Item("orb", "sick orb brah")]
+
 #
 # Main
 #
@@ -55,14 +59,19 @@ player = Player('Hero', room['outside'])
 
 directions = ['n', 'e', 's', 'w']
 
+verbs = ['look', 'get', 'take']
+
 
 def play_game():
     command = ''
+    print(player.current_room)
     while not command == 'q':
-        print(player.current_room)
         command = input("What will you do? ")
         if command in directions:
             player.go(command)
+            print(player.current_room)
+        elif command.split()[0] in verbs:
+            player.execute(command)
 
 
 if __name__ == '__main__':

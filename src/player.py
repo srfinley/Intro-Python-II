@@ -6,9 +6,10 @@ class Player():
     def __init__(self, name, current_room):
         self.name = name
         self.current_room = current_room
+        self.inventory = []
 
     def __str__(self):
-        return f'Player at {self.current_room}'
+        return f'{self.name} at {self.current_room}'
 
     def check_direction(self, direction):
         if direction == 'n':
@@ -27,3 +28,33 @@ class Player():
             self.current_room = self.check_direction(direction)
         else:
             print("You can't go that way.")
+
+    def look(self, obj):
+        pass
+
+    def take(self, obj):
+        obj = ' '.join(obj)
+        success = False
+        for item in self.current_room.contents:
+            if obj == item.name:
+                self.inventory.append(item)
+                self.current_room.contents.remove(item)
+                print(f'Got {obj}!')
+                success = True
+        if not success:
+            for item in self.inventory:
+                if obj == item.name:
+                    print(f"You already have {obj}!")
+        if not success:
+            print(f"No {obj} to take.")
+            
+
+
+    def execute(self, command):
+        words = command.split()
+        verb = words[0]
+        obj = words[1:]
+        if verb == 'look':
+            self.look(obj)
+        if verb == 'get' or verb == 'take':
+            self.take(obj)
