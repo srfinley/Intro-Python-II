@@ -112,6 +112,7 @@ class Player():
             print(f"You don't have {obj}.")
 
     def check_inventory(self):
+        """Print contents of inventory"""
         if len(self.inventory) > 0:
             print("You have:")
             for item in self.inventory:
@@ -119,11 +120,35 @@ class Player():
         else:
             print("You aren't carrying anything.")
 
+    def id_item(self, obj):
+        """Looks for an available item with full or partial name match"""
+        for i in range(-len(obj),0):
+            # compares long input to short name
+            # checks the full string, then cuts off each leading word to check
+            # e.g. "the sword" can be interpreted as "sword"
+            name = ' '.join(obj[i:])
+            for item in self.inventory:
+                if name == item.name:
+                    return name
+            for item in self.current_room.contents:
+                if name == item.name:
+                    return name
+        # compare short input to long name
+        name = ' '.join(obj)
+        for item in self.inventory:
+            if name in item.name:
+                return item.name
+        for item in self.current_room.contents:
+            if name in item.name:
+                return item.name
+        return name
+
     def execute(self, command):
         """Redirects multiword commands to the appropriate function"""
         words = command.split()
         verb = words[0]
-        obj = ' '.join(words[1:])
+        obj = self.id_item(words[1:])
+        # obj = ' '.join(words[1:])
         if verb == 'look':
             self.look(obj)
         if verb == 'get' or verb == 'take':
