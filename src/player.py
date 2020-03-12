@@ -12,6 +12,7 @@ class Player():
         return f'{self.name} at {self.current_room}'
 
     def check_direction(self, direction):
+        """Returns room in specified direction if possible, otherwise None"""
         if direction == 'n':
             return self.current_room.n_to
         elif direction == 'e':
@@ -24,15 +25,36 @@ class Player():
             return False
 
     def go(self, direction):
+        """Changes current room to one in [direction], if possible"""
         if self.check_direction(direction):
             self.current_room = self.check_direction(direction)
         else:
             print("You can't go that way.")
 
     def look(self, obj):
-        pass
+        """Prints description of room or specified item"""
+        if obj:
+            success = False
+            for item in self.inventory:
+                if obj == item.name:
+                    print(f"You're holding {obj}.")
+                    print(item.description)
+                    success = True
+                    break
+            if not success:
+                for item in self.current_room.contents:
+                    if obj == item.name:
+                        print(f"There's {obj} here.")
+                        print(item.description)
+                        success = True
+                        break
+            if not success:
+                print(f"No {obj} to look at.")
+        else:
+            print(self.current_room)
 
     def take(self, obj):
+        """Removes item(s) from room contents and adds to inventory"""
         success = False
         if obj == "all":
             for item in self.current_room.contents:
@@ -40,7 +62,7 @@ class Player():
                 success = True
             self.inventory.extend(self.current_room.contents)
             self.current_room.contents = []
-            
+
         for item in self.current_room.contents:
             if obj == item.name:
                 self.inventory.append(item)
@@ -54,9 +76,16 @@ class Player():
                     print(f"You already have {obj}!")
         if not success:
             print(f"No {obj} to take.")
-            
+
     def drop(self, obj):
+        """Removes item(s) from inventory and adds to room contents"""
         success = False
+        if obj == "all":
+            for item in self.inventory:
+                item.on_drop()
+                success = True
+            self.current_room.contents.extend(self.inventory)
+            self.inventory = []
         for item in self.inventory:
             if obj == item.name:
                 self.current_room.contents.append(item)
@@ -68,6 +97,7 @@ class Player():
             print(f"You don't have {obj}.")
 
     def execute(self, command):
+        """Redirects multiword commands to the appropriate function"""
         words = command.split()
         verb = words[0]
         obj = ' '.join(words[1:])

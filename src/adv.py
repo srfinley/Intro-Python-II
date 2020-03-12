@@ -81,8 +81,6 @@ def play_game():
                 print("You aren't carrying anything.")
         elif command.split()[0] in verbs:
             player.execute(command)
-        else:
-            print("Unable to comply.")
 
 
 if __name__ == '__main__':

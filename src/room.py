@@ -18,5 +18,5 @@ class Room():
             s += '\nThese items are here: '
             for item in self.contents:
                 s += str(item)
-                s+= ', '
+                s += ', '
         return s
