@@ -1,6 +1,6 @@
 from room import Room
 from player import Player
-from item import Item
+from item import Item, LightSource
 
 # Declare all the rooms
 
@@ -9,7 +9,7 @@ room = {
                      "North of you, the cave mount beckons"),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", is_light=False),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
@@ -36,7 +36,8 @@ room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
 room['outside'].contents = [Item("the hot dog", "hot diggity dog"),
-                            Item("orb", "sick orb brah")]
+                            Item("orb", "sick orb brah"),
+                            LightSource("lamp", "a friendly oil lamp")]
 
 #
 # Main
@@ -71,7 +72,6 @@ def play_game():
         command = input("What will you do? ")
         if command in directions:
             player.go(command)
-            print(player.current_room)
         elif command in check_inv:
             if len(player.inventory) > 0:
                 print("You have:")

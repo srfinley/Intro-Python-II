@@ -28,6 +28,7 @@ class Player():
         """Changes current room to one in [direction], if possible"""
         if self.check_direction(direction):
             self.current_room = self.check_direction(direction)
+            print(self.current_room)
         else:
             print("You can't go that way.")
 
