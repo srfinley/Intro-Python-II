@@ -11,7 +11,8 @@ class Player():
     def __str__(self):
         return f'{self.name} at {self.current_room}'
 
-    def examine_room(self):
+    def can_see(self):
+        """Returns whether the player can see the room"""
         lit = self.current_room.is_light
         if not lit:
             for item in self.inventory:
@@ -23,6 +24,11 @@ class Player():
                 if isinstance(item, LightSource):
                     lit = True
                     break
+        return lit
+
+    def examine_room(self):
+        """Prints room, unless player can't see"""
+        lit = self.can_see()
         if lit:
             print(self.current_room)
         else:
@@ -61,26 +67,29 @@ class Player():
     def take(self, obj):
         """Removes item(s) from room contents and adds to inventory"""
         success = False
-        if obj == "all":
-            for item in self.current_room.contents:
-                item.on_take()
-                success = True
-            self.inventory.extend(self.current_room.contents)
-            self.current_room.contents = []
+        if self.can_see():
+            if obj == "all":
+                for item in self.current_room.contents:
+                    item.on_take()
+                    success = True
+                self.inventory.extend(self.current_room.contents)
+                self.current_room.contents = []
 
-        for item in self.current_room.contents:
-            if obj == item.name:
-                self.inventory.append(item)
-                self.current_room.contents.remove(item)
-                item.on_take()
-                success = True
-                break
-        if not success:
-            for item in self.inventory:
+            for item in self.current_room.contents:
                 if obj == item.name:
-                    print(f"You already have {obj}!")
-        if not success:
-            print(f"No {obj} to take.")
+                    self.inventory.append(item)
+                    self.current_room.contents.remove(item)
+                    item.on_take()
+                    success = True
+                    break
+            if not success:
+                for item in self.inventory:
+                    if obj == item.name:
+                        print(f"You already have {obj}!")
+            if not success:
+                print(f"No {obj} to take.")
+        else:
+            print("Good luck finding that in the dark!")
 
     def drop(self, obj):
         """Removes item(s) from inventory and adds to room contents"""
