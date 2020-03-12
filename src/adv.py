@@ -58,11 +58,11 @@ player = Player('Hero', room['outside'])
 #
 # If the user enters "q", quit the game.
 
-directions = ['n', 'e', 's', 'w']
+directions = ('n', 'e', 's', 'w')
 
-verbs = ['look', 'get', 'take', 'drop']
+verbs = ('look', 'get', 'take', 'drop')
 
-check_inv = ['i', 'inventory']
+check_inv = ('i', 'inventory')
 
 
 def play_game():

@@ -14,14 +14,11 @@ class Room():
         self.is_light = is_light
 
     def __str__(self):
-        s = ''
-        if self.is_light:
-            s = f'{self.name} \n {self.description}'
-            if self.contents:
-                s += '\nThese items are here: '
-                for item in self.contents:
-                    s += str(item)
-                    s += ', '
-        else:
-            s = "It's pitch black!"
+        s = f'{self.name} \n {self.description}'
+        if self.contents:
+            s += '\nThese items are here: '
+            for item in self.contents:
+                s += str(item)
+                s += ', '
         return s
+

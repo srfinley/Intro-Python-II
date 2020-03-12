@@ -1,6 +1,6 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
-
+from item import LightSource
 
 class Player():
     def __init__(self, name, current_room):
@@ -11,24 +11,28 @@ class Player():
     def __str__(self):
         return f'{self.name} at {self.current_room}'
 
-    def check_direction(self, direction):
-        """Returns room in specified direction if possible, otherwise None"""
-        if direction == 'n':
-            return self.current_room.n_to
-        elif direction == 'e':
-            return self.current_room.e_to
-        elif direction == 's':
-            return self.current_room.s_to
-        elif direction == 'w':
-            return self.current_room.w_to
+    def examine_room(self):
+        lit = self.current_room.is_light
+        if not lit:
+            for item in self.inventory:
+                if isinstance(item, LightSource):
+                    lit = True
+                    break
+        if not lit:
+            for item in self.current_room.contents:
+                if isinstance(item, LightSource):
+                    lit = True
+                    break
+        if lit:
+            print(self.current_room)
         else:
-            return False
+            print("It's pitch black!")
 
     def go(self, direction):
         """Changes current room to one in [direction], if possible"""
-        if self.check_direction(direction):
-            self.current_room = self.check_direction(direction)
-            print(self.current_room)
+        if getattr(self.current_room, f'{direction}_to'):
+            self.current_room = getattr(self.current_room, f'{direction}_to')
+            self.examine_room()
         else:
             print("You can't go that way.")
 
@@ -52,7 +56,7 @@ class Player():
             if not success:
                 print(f"No {obj} to look at.")
         else:
-            print(self.current_room)
+            self.examine_room()
 
     def take(self, obj):
         """Removes item(s) from room contents and adds to inventory"""
@@ -83,9 +87,9 @@ class Player():
         success = False
         if obj == "all":
             for item in self.inventory:
+                self.current_room.contents.extend(self.inventory)
                 item.on_drop()
                 success = True
-            self.current_room.contents.extend(self.inventory)
             self.inventory = []
         for item in self.inventory:
             if obj == item.name:
