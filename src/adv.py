@@ -67,15 +67,25 @@ check_inv = ('i', 'inventory')
 
 def play_game():
     command = ''
+    last_obj = ''
+    print('-----------------')
     print(player.current_room)
     while not command == 'q':
-        command = input("What will you do? ")
+        command = input("==> ")
         if command in directions:
             player.go(command)
         elif command in check_inv:
             player.check_inventory()
         elif command.split()[0] in verbs:
-            player.execute(command)
+            if len(command.split()) > 1:
+                if command.split()[1] == 'it':
+                    player.execute(command.split()[0] +
+                                   ' ' + last_obj)
+                else:
+                    last_obj = ' '.join(command.split()[1:])
+                    player.execute(command)
+            else:
+                player.execute(command)
 
 
 if __name__ == '__main__':

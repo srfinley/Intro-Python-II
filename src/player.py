@@ -97,7 +97,7 @@ class Player():
         success = False
         if obj == "all":
             for item in self.inventory:
-                self.current_room.contents.extend(self.inventory)
+                self.current_room.contents.append(item)
                 item.on_drop()
                 success = True
             self.inventory = []

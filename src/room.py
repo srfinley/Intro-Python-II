@@ -14,7 +14,7 @@ class Room():
         self.is_light = is_light
 
     def __str__(self):
-        s = f'{self.name} \n {self.description}'
+        s = f'{self.name} \n\n {self.description}'
         if self.contents:
             s += '\nThese items are here: '
             for item in self.contents:
