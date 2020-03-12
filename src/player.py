@@ -122,7 +122,7 @@ class Player():
 
     def id_item(self, obj):
         """Looks for an available item with full or partial name match"""
-        for i in range(-len(obj),0):
+        for i in range(-len(obj), 0):
             # compares long input to short name
             # checks the full string, then cuts off each leading word to check
             # e.g. "the sword" can be interpreted as "sword"

@@ -37,7 +37,9 @@ room['treasure'].s_to = room['narrow']
 
 room['outside'].contents = [Item("the hot dog", "hot diggity dog"),
                             Item("orb", "sick orb brah"),
-                            LightSource("lamp", "a friendly oil lamp")]
+                            LightSource("lamp", "a friendly oil lamp"),
+                            Item("the rusty sword", "a super gnarly sword"),
+                            Item("the silver sword", "shiny rad sword")]
 
 #
 # Main
