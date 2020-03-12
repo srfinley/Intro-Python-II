@@ -21,4 +21,3 @@ class Room():
                 s += str(item)
                 s += ', '
         return s
-

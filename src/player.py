@@ -2,6 +2,7 @@
 # currently.
 from item import LightSource
 
+
 class Player():
     def __init__(self, name, current_room):
         self.name = name
@@ -109,6 +110,14 @@ class Player():
                 break
         if not success:
             print(f"You don't have {obj}.")
+
+    def check_inventory(self):
+        if len(self.inventory) > 0:
+            print("You have:")
+            for item in self.inventory:
+                print(item)
+        else:
+            print("You aren't carrying anything.")
 
     def execute(self, command):
         """Redirects multiword commands to the appropriate function"""

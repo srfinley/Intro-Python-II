@@ -73,12 +73,7 @@ def play_game():
         if command in directions:
             player.go(command)
         elif command in check_inv:
-            if len(player.inventory) > 0:
-                print("You have:")
-                for item in player.inventory:
-                    print(item)
-            else:
-                print("You aren't carrying anything.")
+            player.check_inventory()
         elif command.split()[0] in verbs:
             player.execute(command)
 
