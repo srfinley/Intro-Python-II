@@ -1,4 +1,6 @@
 from room import Room
+from player import Player
+from item import Item, LightSource
 
 # Declare all the rooms
 
@@ -7,7 +9,7 @@ room = {
                      "North of you, the cave mount beckons"),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", is_light=False),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
@@ -33,11 +35,19 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+room['outside'].contents = [Item("the hot dog", "hot diggity dog"),
+                            Item("orb", "sick orb brah"),
+                            LightSource("lamp", "a friendly oil lamp"),
+                            Item("the rusty sword", "a super gnarly sword"),
+                            Item("the silver sword", "shiny rad sword")]
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
+
+player = Player('Hero', room['outside'])
 
 # Write a loop that:
 #
@@ -49,3 +59,37 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+directions = ('n', 'e', 's', 'w')
+
+verbs = ('look', 'get', 'take', 'drop')
+
+check_inv = ('i', 'inventory')
+
+
+def play_game():
+    command = ''
+    last_obj = ''
+    print('-----------------')
+    print(player.current_room)
+    while not command == 'q':
+        command = input("==> ")
+        if command in directions:
+            player.go(command)
+        elif command in check_inv:
+            player.check_inventory()
+        elif command.split()[0] in verbs:
+            if len(command.split()) > 1:
+                if command.split()[1] == 'it':
+                    player.execute(command.split()[0] +
+                                   ' ' + last_obj)
+                else:
+                    last_obj = ' '.join(command.split()[1:])
+                    player.execute(command)
+            else:
+                player.execute(command)
+
+
+if __name__ == '__main__':
+    play_game()
+    print("Thank you for playing!")
